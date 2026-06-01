@@ -43,4 +43,3 @@ No scalability :
 A single server has limited resources.
 It cannot handle sudden traffic spikes.
 There is no way to add capacity without replacing the entire machine.
-
