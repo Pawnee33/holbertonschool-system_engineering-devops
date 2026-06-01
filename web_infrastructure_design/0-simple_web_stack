@@ -1,0 +1,46 @@
+https://drive.google.com/file/d/18X19GDe2mBicLcFR8FYOAnl89KeuLr1D/view?usp=sharing
+
+What is a server ?
+
+A server is a computer that listens on a network port at all times, waiting for requests.
+When it receives one, it processes it and sends back a response.
+
+What is the role of the domain name ?
+
+The domain name is a human-readable address.
+Instead of memorizing the IP address 8.8.8.8, the user just types www.foobar.com.
+The DNS then translates that name into the IP address to reach the server.
+
+What type of DNS record www is in www.foobar.com ?
+
+A record: it maps a domain name to an IPv4 address.
+
+What is the role of the web server ?
+
+It receives HTTP requests, serves static files directly, and forwards dynamic requests to the application server.
+
+What is the role of the application server ?
+
+The application server executes your code, contains the business logic, queries MySQL and generates the HTML response.
+
+What is the role of the database ?
+
+MySQL receives SQL queries from the application server and returns raw data and it never communicates directly with the browser.
+
+What is the server using to communicate with the computer of the user requesting the website ?
+
+HTTP is the communication protocol between the browser and the server.
+
+SPOF :
+This is a Single Point of Failure.
+If the server goes down, the entire website is unavailable. There is no redundancy.
+
+Downtime :
+To deploy new code, Nginx needs to be restarted.
+During that restart, the website is unavailable to users.
+
+No scalability :
+A single server has limited resources.
+It cannot handle sudden traffic spikes.
+There is no way to add capacity without replacing the entire machine.
+
