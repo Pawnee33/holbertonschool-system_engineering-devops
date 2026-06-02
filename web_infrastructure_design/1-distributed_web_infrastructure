@@ -1,0 +1,38 @@
+https://drive.google.com/file/d/1AT6wYsHlkjUAZXJT6-4fKZWS-isMVs0U/view?usp=sharing
+
+For every additional element, why are you adding it ?
+
+If Server 1 goes down, the site remains online thanks to Server 2. That is redundancy.
+The two servers share the load of requests. That is scalability.
+The HAProxy load balancer is added to distribute traffic between the two servers and automatically detect if a server is down.
+The Primary-Replica cluster is added for two reasons: performance (reads are distributed) and availability (if the Primary fails, the Replica can be promoted).
+
+What distribution algorithm is your load balancer configured with and how does it work ?
+
+The Round Robin algorithm is a method of distributing requests evenly amongst the servers in a server farm.
+
+Is your load-balancer enabling an Active-Active or Active-Passive setup, explain the difference between both ?
+
+Active-Active: both servers process requests simultaneously. Better performance, better use of resources. If one fails, the other continues. This is what Task 1 configures.
+Active-Passive: only one server is active; the other is on standby and monitors. If the active server fails, the passive server takes over (failover). More reliable against failures, but the passive server wastes resources whilst on standby.
+
+How a database Primary-Replica (Master-Slave) cluster works?
+
+In a MySQL cluster, the Primary handles both reads and writes. 
+The Replica receives an automatic copy of everything the Primary writes and is used solely for reads.
+
+What is the difference between the Primary node and the Replica node in regard to the application ?
+
+The Primary node is the only node that accepts writes (INSERT, UPDATE, DELETE) from the application. The Replica node only handles reads (SELECT), which reduces the load on the Primary.
+
+Where are the SPOFs in this infrastructure ?
+
+The load balancer itself is a single point of failure. If HAProxy goes down, no one can access the site
+
+What are the security issues ?
+
+There is no firewall, so anyone can attempt to connect directly to the servers. There is no HTTPS, so data is transmitted in plain text and can be intercepted.
+
+What about monitoring ?
+
+There is no monitoring. If a server is consuming 100% CPU, if MySQL is overloaded, or if a server goes down, nobody knows. There are no alerts and no visibility into the state of the infrastructure.
