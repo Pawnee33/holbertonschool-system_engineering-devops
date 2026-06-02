@@ -1,3 +1,39 @@
 https://drive.google.com/file/d/12B2ErirTHUq3VK29BaVLoacxhKdjltlv/view?usp=sharing
 
 For every additional element, why you are adding it ?
+
+3 firewalls : One in front of the load balancer to filter incoming internet traffic and only allow HTTPS on port 443. One in front of each server to block direct connections from the internet and only allow traffic coming from the load balancer.
+SSL certificate : To encrypt traffic between the user and the server. Without it, data like passwords and personal information is transmitted in plain text and can be intercepted.
+Monitoring agents : To collect metrics (CPU, RAM, errors, QPS) from each server and send them to a centralized service like Datadog. Without them, nobody knows if a server is down or overloaded.
+
+What are firewalls for ?
+
+Firewalls filter network traffic based on predefined rules. They inspect every packet entering or leaving the network and decide whether to allow or block it based on port numbers and IP addresses.
+
+Why is the traffic served over HTTPS ?
+
+HTTPS encrypts all data in transit between the browser and the server using SSL/TLS. Without HTTPS, anyone on the network can intercept and read the data — this is called a Man-in-the-Middle attack. HTTPS also authenticates the server via an SSL certificate so the user knows they are communicating with the real server.
+
+What is monitoring used for ?
+
+Monitoring gives real-time visibility into the state of the infrastructure. It detects issues like high CPU usage, memory saturation, application errors, or server outages, and sends alerts so the team can react before users are impacted.
+
+How is the monitoring tool collecting data ?
+
+A monitoring agent is installed on each server. It runs in the background, continuously collecting metrics like CPU, RAM, disk usage, and application logs. It then sends this data to a centralized service like Datadog or Sumo Logic every few seconds.
+
+What to do to monitor your web server QPS ?
+
+QPS (Queries Per Second) is measured by reading the Nginx access logs. Every request is logged with a timestamp. The monitoring agent parses these logs in real time, counts the number of requests per second, and sends that metric to the monitoring service where it can be visualized and alerted on.
+
+Why is terminating SSL at the load balancer level an issue ?
+
+When SSL terminates at the load balancer, the traffic between the load balancer and the servers is unencrypted HTTP. If someone gains access to the internal network, they can read all the data in transit. The solution would be to encrypt traffic end-to-end, including between the load balancer and the servers.
+
+Why is having only one MySQL server capable of accepting writes an issue ?
+
+The Primary is the only node that accepts writes. If the Primary goes down, no write operations are possible, users cannot create accounts, place orders, or post content. It is a single point of failure for all write operations.
+
+Why having servers with all the same components might be a problem ?
+
+When Nginx, the application server, and MySQL all run on the same machine, they compete for the same resources — CPU, RAM, and disk. If MySQL consumes all the RAM, Nginx slows down. If the application server overloads the CPU, MySQL becomes slow. Also, updating one component requires restarting the entire server, causing downtime for all components.

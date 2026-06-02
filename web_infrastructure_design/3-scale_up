@@ -1,0 +1,14 @@
+https://drive.google.com/file/d/1Te0lnvt0vrJg2jVEy4UlOXqjfF7OSA_l/view?usp=sharing
+
+For every additional element, why are you adding it ?
+
+A new server is added to allow the separation of components. Each component gets its own dedicated server so they no longer compete for the same resources.
+
+A second HAProxy is added and configured as a cluster with the first one. They share a virtual IP address and send heartbeats to each other. If one goes down, the other takes over in less than 2 seconds. This eliminates the load balancer as a single point of failure.
+
+Nginx is separated onto its own dedicated server. It handles thousands of simultaneous HTTP connections but uses very little CPU. Isolating it allows it to be tuned for HTTP performance and scaled independently.
+
+The application server is separated because it is CPU and RAM intensive. Running it on its own server prevents resource competition with Nginx or MySQL. It can also be updated independently.
+
+MySQL is given its own dedicated server so the hardware can be optimized specifically for database workloads — fast SSDs and maximum RAM. It also isolates failures and allows independent scaling.
+
